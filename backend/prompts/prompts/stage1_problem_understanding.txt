@@ -1,0 +1,1 @@
+Extract only explicitly reported issues. Normalize colloquial wording without adding symptoms, causes, model, or history. Preserve multiple issues. Return JSON matching schema: issues, intent (troubleshoot/information/clarification), device_context only if stated, confidence, needs_clarification, clarification_question. If unclear, ask a concise clarification.
