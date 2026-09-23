@@ -33,6 +33,12 @@ function App() {
     }
   };
 
+  const handleReset = () => {
+    setQuery('');
+    setResult(null);
+    setError(null);
+  };
+
   return (
     <div className="app-shell">
       <div className="app-container">
@@ -53,19 +59,21 @@ function App() {
           )}
 
           {!loading && !error && result && (
-            <ResultDisplay response={result} />
+            <ResultDisplay response={result} onReset={handleReset} />
           )}
 
           {!loading && !error && !result && (
-            <EmptyState />
+            <EmptyState onSelectSample={(sample) => setQuery(sample)} />
           )}
         </main>
 
         <footer className="app-footer">
           <div className="footer-content">
+            <span className="footer-brand">SAMSUNG</span>
+            <span className="footer-dot">•</span>
             <span>Samsung PRISM GenAI Hackathon 3rd Edition (2026–27)</span>
             <span className="footer-dot">•</span>
-            <span>Theme 02 — Smart Guided Troubleshooting Engine</span>
+            <span>Theme 02: Smart Guided Troubleshooting Engine</span>
             <span className="footer-dot">•</span>
             <span>Team Srm_Devlopers</span>
           </div>

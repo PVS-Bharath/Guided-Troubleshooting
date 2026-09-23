@@ -7,11 +7,18 @@ interface TroubleshootInputProps {
   loading: boolean;
 }
 
-const SAMPLE_QUERIES = [
-  'My phone is getting very hot',
-  'Battery drains unusually fast',
-  'Wi-Fi disconnects frequently',
-  'Screen flickers when charging',
+interface SampleQuery {
+  icon: string;
+  label: string;
+  text: string;
+}
+
+const SAMPLE_QUERIES: SampleQuery[] = [
+  { icon: '🔥', label: 'Overheating', text: 'My phone is getting very hot' },
+  { icon: '🔋', label: 'Battery', text: 'Battery drains unusually fast' },
+  { icon: '📶', label: 'Wi-Fi', text: 'Wi-Fi disconnects frequently' },
+  { icon: '⚡', label: 'Charging', text: 'Phone charges slowly or stops charging' },
+  { icon: '📱', label: 'Screen', text: 'Screen flickers or dims unexpectedly' },
 ];
 
 export default function TroubleshootInput({
@@ -27,32 +34,40 @@ export default function TroubleshootInput({
   };
 
   return (
-    <section className="input-section">
+    <section className="input-section" aria-label="Device problem input">
       <div className="input-card">
-        <label htmlFor="device-issue-input" className="input-label">
-          Describe what's wrong with your device
-        </label>
+        <div className="input-header-row">
+          <div className="input-label-group">
+            <span className="sparkle-accent">✨</span>
+            <label htmlFor="device-issue-input" className="input-label">
+              Describe your device issue
+            </label>
+          </div>
+          <span className="input-hint">Natural language • AI-powered diagnosis</span>
+        </div>
         
         <div className="input-field-wrapper">
-          <svg
-            className="input-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
+          <div className="input-icon-wrapper">
+            <svg
+              className="input-search-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
 
           <input
             id="device-issue-input"
             type="text"
             className="problem-input"
-            placeholder="Describe the issue (e.g., My phone is getting very hot)..."
+            placeholder="Type your complaint (e.g. My phone is getting very hot)..."
             value={query}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -68,7 +83,7 @@ export default function TroubleshootInput({
               title="Clear input"
               aria-label="Clear input"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -77,48 +92,46 @@ export default function TroubleshootInput({
 
           <button
             type="button"
-            className="submit-button"
+            className={`submit-button ${loading ? 'is-loading' : ''}`}
             onClick={onSubmit}
             disabled={loading || !query.trim()}
           >
             {loading ? (
               <>
                 <span className="button-spinner" aria-hidden="true"></span>
-                <span>Analyzing...</span>
+                <span>Diagnosing...</span>
               </>
             ) : (
               <>
                 <span>Troubleshoot</span>
-                <svg
-                  className="button-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
+                <span className="kbd-shortcut" aria-hidden="true">↵</span>
               </>
             )}
           </button>
         </div>
 
-        <div className="suggestion-pills">
-          <span className="pills-label">Common issues:</span>
-          {SAMPLE_QUERIES.map((sample) => (
-            <button
-              key={sample}
-              type="button"
-              className="pill-button"
-              onClick={() => onChange(sample)}
-              disabled={loading}
-            >
-              {sample}
-            </button>
-          ))}
+        <div className="suggestion-pills-container">
+          <div className="pills-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="lightbulb-icon">
+              <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+            </svg>
+            <span>Quick sample issues:</span>
+          </div>
+
+          <div className="suggestion-pills">
+            {SAMPLE_QUERIES.map((sample) => (
+              <button
+                key={sample.label}
+                type="button"
+                className={`pill-button ${query === sample.text ? 'is-active' : ''}`}
+                onClick={() => onChange(sample.text)}
+                disabled={loading}
+              >
+                <span className="pill-icon">{sample.icon}</span>
+                <span className="pill-text">{sample.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
