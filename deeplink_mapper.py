@@ -13,25 +13,23 @@ class DeeplinkMapper:
         self.load_catalog()
 
     def load_catalog(self):
-        try:
-            with open(self.catalog_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if isinstance(data, list):
-                    for item in data:
-                        name = item.get("name") or item.get("target")
-                        url = item.get("deeplink") or item.get("url")
-                        if name and url:
-                            self.catalog[name.lower().strip()] = url.strip()
-                elif isinstance(data, dict):
-                    for k, v in data.items():
-                        self.catalog[k.lower().strip()] = v.strip()
-        except FileNotFoundError:
-            self.catalog = {
-                "battery": "intent://settings/battery#Intent;scheme=android-app;end",
-                "display": "intent://settings/display#Intent;scheme=android-app;end",
-                "device_care": "intent://settings/device_care#Intent;scheme=android-app;end",
-                "wifi": "intent://settings/wifi#Intent;scheme=android-app;end",
-            }
+        if not os.path.exists(self.catalog_path):
+            raise FileNotFoundError(f"Authoritative deeplink catalog not found: {self.catalog_path}")
+
+        with open(self.catalog_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if isinstance(data, list):
+                for item in data:
+                    name = item.get("name") or item.get("target")
+                    url = item.get("deeplink") or item.get("url")
+                    if name and url:
+                        self.catalog[name.lower().strip()] = url.strip()
+            elif isinstance(data, dict):
+                for k, v in data.items():
+                    self.catalog[k.lower().strip()] = v.strip()
+
+        if not self.catalog:
+            raise ValueError(f"Authoritative deeplink catalog is empty or invalid: {self.catalog_path}")
 
     def map_action(self, action_name: str, hint: Optional[str] = None) -> Optional[str]:
         if hint and hint.lower().strip() in self.catalog:

@@ -15,14 +15,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dependency injection – use real adapters in production, mocks for now
+# Shared orchestrator singleton instance
+_orchestrator_instance = None
+
 def get_orchestrator() -> Orchestrator:
-    from .adapters.mock_ai import MockAIEngine
-    from .adapters.mock_retrieval import MockRetrievalEngine
-    from .adapters.mock_deeplink import MockDeeplinkValidator
-    return Orchestrator(ai_engine=MockAIEngine(),
-                       retrieval_engine=MockRetrievalEngine(),
-                       deeplink_validator=MockDeeplinkValidator())
+    global _orchestrator_instance
+    if _orchestrator_instance is None:
+        from .adapters.gemini_ai import GeminiAIEngine
+        from .adapters.retrieval_adapter import Person2RetrievalEngine
+        from .adapters.person3_deeplink import Person3DeeplinkValidator
+        _orchestrator_instance = Orchestrator(
+            ai_engine=GeminiAIEngine(),
+            retrieval_engine=Person2RetrievalEngine(),
+            deeplink_validator=Person3DeeplinkValidator(),
+        )
+    return _orchestrator_instance
+
 
 @app.get("/health")
 async def health():

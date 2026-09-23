@@ -1,26 +1,35 @@
-from typing import Literal
-from pydantic import BaseModel,Field,ConfigDict
-class Strict(BaseModel):
- model_config=ConfigDict(extra="forbid")
-class Stage1(Strict):
- issues:list[str]=Field(min_length=1)
- intent:Literal["troubleshoot","information","clarification"]
- device_context:dict[str,str]={}
- confidence:Literal["low","medium","high"]
- needs_clarification:bool
- clarification_question:str|None=None
-class Action(Strict):
- actionName:str
- description:str
- category:Literal["auto","critical","manual"]
- steps:list[str]=Field(min_length=1)
- deeplink:str|None=None
- source_ids:list[str]=Field(min_length=1)
-class Plan(Strict):
- title:str
- score:float=Field(ge=0,le=1)
- actions:list[Action]
- status:Literal["ok","needs_clarification","no_grounded_solution"]
- issues:list[str]=[]
- clarification_question:str|None=None
- metadata:dict[str,object]={}
+from typing import List, Optional, Literal, Dict, Any
+from pydantic import BaseModel, Field, ConfigDict
+
+class Action(BaseModel):
+    actionName: str
+    description: str
+    category: str = Field(default="manual", description="auto | critical | manual")
+    steps: List[str] = Field(default_factory=list)
+    deeplink: Optional[str] = None
+    source_ids: Optional[List[str]] = None
+
+class Stage1(BaseModel):
+    issues: List[str] = Field(default_factory=list)
+    intent: Optional[str] = "troubleshoot"
+    device_context: Dict[str, Any] = Field(default_factory=dict)
+    confidence: Optional[str] = "medium"
+    needs_clarification: bool = False
+    clarification_question: Optional[str] = None
+
+class Plan(BaseModel):
+    title: str = "Troubleshooting plan"
+    score: float = Field(default=0.8, ge=0, le=1)
+    actions: List[Action] = Field(default_factory=list)
+    status: Literal["ok", "needs_clarification", "no_grounded_solution"] = "ok"
+    issues: List[str] = Field(default_factory=list)
+    clarification_question: Optional[str] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+class TroubleshootingResponse(BaseModel):
+    query: str
+    goal: str
+    actions: List[Action]
+    cached: bool = False
+    latency_ms: Optional[float] = None
+

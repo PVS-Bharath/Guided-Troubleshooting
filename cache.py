@@ -20,8 +20,15 @@ class FastPathCache:
             entry, timestamp = self.cache[key]
             if time.time() - timestamp < self.ttl:
                 self.hits += 1
-                entry.cached = True
-                return entry
+                if hasattr(entry, "model_copy"):
+                    copy_entry = entry.model_copy(deep=True)
+                elif hasattr(entry, "copy"):
+                    copy_entry = entry.copy(deep=True)
+                else:
+                    import copy
+                    copy_entry = copy.deepcopy(entry)
+                copy_entry.cached = True
+                return copy_entry
             else:
                 del self.cache[key]
         self.misses += 1
@@ -29,7 +36,14 @@ class FastPathCache:
 
     def set(self, query: str, response: TroubleshootingResponse):
         key = self._normalize_key(query)
-        self.cache[key] = (response, time.time())
+        if hasattr(response, "model_copy"):
+            cached_item = response.model_copy(deep=True)
+        elif hasattr(response, "copy"):
+            cached_item = response.copy(deep=True)
+        else:
+            import copy
+            cached_item = copy.deepcopy(response)
+        self.cache[key] = (cached_item, time.time())
 
     def get_metrics(self) -> dict:
         total = self.hits + self.misses

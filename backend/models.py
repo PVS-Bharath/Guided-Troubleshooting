@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import uuid
 
 class TroubleshootRequest(BaseModel):
@@ -8,18 +8,20 @@ class TroubleshootRequest(BaseModel):
     request_id: Optional[str] = Field(default_factory=lambda: str(uuid.uuid4()), description="Optional request identifier for tracing")
 
 class ActionStep(BaseModel):
-    """Single action recommended by the system (development mock)"""
+    """Single action recommended by the system"""
     actionName: str
     description: str
-    steps: List[str]
-    deeplink: Optional[str] = None  # Development only – not official Samsung deeplink
+    steps: List[str] = Field(default_factory=list)
+    deeplink: Optional[str] = None
     category: Optional[str] = None
-    is_mock: bool = True  # Development/mock indicator
+    is_mock: bool = False  # Real integrated actions are False
 
 class TroubleshootResponse(BaseModel):
-    """Response payload for /troubleshoot (development mock)"""
+    """Canonical response payload for /troubleshoot"""
     request_id: str
     query: str
     goal: str
     actions: List[ActionStep]
-    # MARK: Development mock response – replace with official schema when available
+    cached: bool = False
+    latency_ms: Optional[float] = None
+    metadata: Optional[Dict[str, Any]] = None

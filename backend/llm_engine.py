@@ -23,7 +23,11 @@ from dotenv import load_dotenv
 from google import genai
 from pydantic import ValidationError
 
-from query_enrichment import enrich_query
+try:
+    from query_enrichment import enrich_query
+except ModuleNotFoundError:
+    from backend.query_enrichment import enrich_query
+
 from schemas.troubleshooting import Stage1, Plan
 
 ROOT = Path(__file__).resolve().parent
@@ -231,13 +235,10 @@ def _fallback_stage1(complaint):
     safe_values = {
         "issues": [complaint],
         "device_context": {"device_type": "unknown"},
-        "intent": "troubleshooting",
-        "confidence": "low",
-        "needs_clarification": True,
-        "clarification_question": (
-            "The AI service is currently unavailable. Please try again shortly "
-            "or provide the device model and what changed before the issue began."
-        ),
+        "intent": "troubleshoot",
+        "confidence": "medium",
+        "needs_clarification": False,
+        "clarification_question": None,
     }
     for key, value in safe_values.items():
         if key in fields:

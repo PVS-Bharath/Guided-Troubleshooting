@@ -17,13 +17,12 @@ def test_pipeline():
 
     validated_actions, warnings = validator.validate_and_order_actions(sample_actions)
     assert validated_actions[0].category == "critical", "Ordering failed!"
-    print("✓ Validation and Action Ordering test passed.")
+    print("[PASS] Validation and Action Ordering test passed.")
 
-    # 2. Test Anti-Hallucination
     fake_action = Action(actionName="Fake Action", description="Test", category="auto", steps=[], deeplink="http://malicious-url.com")
     val_fake, warnings = validator.validate_and_order_actions([fake_action])
     assert val_fake[0].deeplink != "http://malicious-url.com", "Anti-hallucination check failed!"
-    print("✓ Anti-hallucination URL rejection test passed.")
+    print("[PASS] Anti-hallucination URL rejection test passed.")
 
     # 3. Test Cache Latency
     query = "Phone is overheating"
@@ -41,7 +40,7 @@ def test_pipeline():
 
     assert cached_res is not None, "Cache miss!"
     assert latency_ms < 300, f"Cache latency high: {latency_ms:.2f} ms"
-    print(f"✓ Cache hit latency test passed: {latency_ms:.4f} ms (Target: < 300ms)")
+    print(f"[PASS] Cache hit latency test passed: {latency_ms:.4f} ms (Target: < 300ms)")
 
 if __name__ == "__main__":
     test_pipeline()
