@@ -35,3 +35,10 @@ yarn-error.log*
 .idea/
 *.swp
 *.swo
+
+# Python generated files
+**/__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
