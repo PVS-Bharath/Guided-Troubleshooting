@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import LoadingSpinner from './components/LoadingSpinner';
+import Header from './components/Header';
+import TroubleshootInput from './components/TroubleshootInput';
+import LoadingState from './components/LoadingState';
+import ErrorState from './components/ErrorState';
+import EmptyState from './components/EmptyState';
 import ResultDisplay from './components/ResultDisplay';
 import type { TroubleshootResponse } from './types';
 
@@ -22,7 +26,7 @@ function App() {
       if (e.response) {
         setError(`Error ${e.response.status}: ${e.response.data.detail || e.response.statusText}`);
       } else {
-        setError('Network error or server unavailable');
+        setError('Network error or server unavailable. Please check backend connection.');
       }
     } finally {
       setLoading(false);
@@ -30,23 +34,43 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Smart Guided Troubleshooter</h1>
-      <p>Describe what's wrong with your device.</p>
-      <input
-        type="text"
-        placeholder="My phone is getting very hot"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-        disabled={loading}
-      />
-      <button onClick={handleSubmit} disabled={loading || !query.trim()}>
-        {loading ? 'Thinking…' : 'Troubleshoot'}
-      </button>
-      {loading && <LoadingSpinner />}
-      {error && <div className="error">{error}</div>}
-      {result && <ResultDisplay response={result} />}
+    <div className="app-shell">
+      <div className="app-container">
+        <Header />
+
+        <TroubleshootInput
+          query={query}
+          onChange={setQuery}
+          onSubmit={handleSubmit}
+          loading={loading}
+        />
+
+        <main className="content-area">
+          {loading && <LoadingState />}
+
+          {!loading && error && (
+            <ErrorState message={error} onRetry={handleSubmit} />
+          )}
+
+          {!loading && !error && result && (
+            <ResultDisplay response={result} />
+          )}
+
+          {!loading && !error && !result && (
+            <EmptyState />
+          )}
+        </main>
+
+        <footer className="app-footer">
+          <div className="footer-content">
+            <span>Samsung PRISM GenAI Hackathon 3rd Edition (2026–27)</span>
+            <span className="footer-dot">•</span>
+            <span>Theme 02 — Smart Guided Troubleshooting Engine</span>
+            <span className="footer-dot">•</span>
+            <span>Team Srm_Devlopers</span>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

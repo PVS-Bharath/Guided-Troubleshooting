@@ -5,6 +5,7 @@ export interface ActionStep {
   steps: string[];
   deeplink?: string;
   category?: string;
+  is_mock?: boolean;
 }
 
 export interface TroubleshootResponse {
