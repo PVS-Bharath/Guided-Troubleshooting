@@ -22,15 +22,10 @@ class ResponseValidator:
             else:
                 action.deeplink = mapped_url
 
-            category_clean = action.category.lower().strip() if action.category else "manual"
-            if category_clean not in CATEGORY_ORDER:
+            if action.category.lower() not in CATEGORY_ORDER:
                 action.category = "manual"
             else:
-                action.category = category_clean
-
-            # Manual actions must not receive actionable deeplinks
-            if action.category == "manual":
-                action.deeplink = None
+                action.category = action.category.lower()
 
             validated_actions.append(action)
 
