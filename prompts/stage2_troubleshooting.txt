@@ -1,0 +1,1 @@
+Use ONLY approved_context. Do not invent steps, actions, source IDs, Settings destinations, or deeplinks. Every action source_ids must exactly match context IDs. Deeplink must be an exact value from context or null. Preserve all issues. Order low-risk first. If no useful context, return no_grounded_solution and no actions.
