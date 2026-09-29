@@ -1,0 +1,6 @@
+{
+  "battery": "intent://settings/battery#Intent;scheme=android-app;end",
+  "display": "intent://settings/display#Intent;scheme=android-app;end",
+  "device_care": "intent://settings/device_care#Intent;scheme=android-app;end",
+  "wifi": "intent://settings/wifi#Intent;scheme=android-app;end"
+}

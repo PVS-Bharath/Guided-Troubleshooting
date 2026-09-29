@@ -1,0 +1,22 @@
+[
+  {
+    "id": "KB_BATTERY_OVERHEAT",
+    "title": "Device Overheating and Thermal Control",
+    "problem_description": "Phone gets very hot during usage or charging",
+    "category": "auto",
+    "action_name": "Check Battery Usage",
+    "description": "Examine background apps and thermal power usage settings.",
+    "steps": ["Open Settings", "Navigate to Battery and Device Care", "Tap Battery"],
+    "deeplink": "settings://battery/usage"
+  },
+  {
+    "id": "KB_NET_WIFI_RESET",
+    "title": "Wi-Fi Connection Dropping",
+    "problem_description": "Wireless network disconnects frequently or has no internet",
+    "category": "manual",
+    "action_name": "Reset Network Settings",
+    "description": "Reset all network adapters to restore stable connectivity.",
+    "steps": ["Open Settings", "General Management", "Reset", "Reset Network Settings"],
+    "deeplink": "settings://general/reset_network"
+  }
+]
