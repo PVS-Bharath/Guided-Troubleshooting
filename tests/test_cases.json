@@ -1,0 +1,62 @@
+[
+  {
+    "complaint": "Battery drains quickly"
+  },
+  {
+    "complaint": "My battery is dying so fast"
+  },
+  {
+    "complaint": "Phone gets hot"
+  },
+  {
+    "complaint": "My phone overheats"
+  },
+  {
+    "complaint": "Screen flickers"
+  },
+  {
+    "complaint": "Display keeps blinking"
+  },
+  {
+    "complaint": "Battery drains and phone overheats"
+  },
+  {
+    "complaint": "Battery drains and screen flickers"
+  },
+  {
+    "complaint": "Phone is hot and battery drops fast"
+  },
+  {
+    "complaint": "Phone won't charge"
+  },
+  {
+    "complaint": "Phone does not charge"
+  },
+  {
+    "complaint": "Screen flashes randomly"
+  },
+  {
+    "complaint": "Battery percentage falls rapidly"
+  },
+  {
+    "complaint": "Phone feels too hot"
+  },
+  {
+    "complaint": "Wi-Fi disconnects"
+  },
+  {
+    "complaint": "Bluetooth won't connect"
+  },
+  {
+    "complaint": "Apps crash"
+  },
+  {
+    "complaint": "Phone restarts"
+  },
+  {
+    "complaint": "Camera is blurry"
+  },
+  {
+    "complaint": "Unknown issue"
+  }
+]
