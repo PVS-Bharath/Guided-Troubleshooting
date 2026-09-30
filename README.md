@@ -628,7 +628,7 @@ cd Guided-Troubleshooting
 
 ``` powershell
 python -m venv backendenv
-.ackendenv\Scripts\Activate.ps1
+.\backend\env\Scripts\Activate.ps1
 ```
 
 ## Install dependencies
@@ -653,7 +653,7 @@ Add the Gemini key to `.env` if live Gemini generation is required.
 From project root:
 
 ``` powershell
-.ackendenv\Scripts\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+.\backend\env\Scripts\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Open:
