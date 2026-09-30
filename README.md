@@ -15,6 +15,9 @@ actionable troubleshooting workflows**.
 🎥 **Project Demonstration Video:**  
 https://youtu.be/n5QUuWbuMSo
 
+📊 **Project Presentation (PPT):**
+https://docs.google.com/presentation/d/10cpphCCZq6MkWp0kPXvpW0UZncM1uKrT/edit?usp=sharing&ouid=100383858190968814876&rtpof=true&sd=true
+
 # Overview
 
 The system accepts natural-language complaints such as:
