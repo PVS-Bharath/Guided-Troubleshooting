@@ -634,8 +634,8 @@ python -m venv backendenv
 ## Install dependencies
 
 ``` powershell
-.ackendenv\Scripts\pip.exe install -r requirements.txt
-.ackendenv\Scripts\pip.exe install -r backendequirements.txt
+.\backend\env\Scripts\pip.exe install -r requirements.txt
+.\backend\env\Scripts\pip.exe install -r backendequirements.txt
 ```
 
 ## Configure environment
@@ -688,19 +688,19 @@ http://localhost:5173
 From repository root:
 
 ``` powershell
-.ackendenv\Scripts\pytest.exe -q
+.\backend\env\Scripts\pytest.exe -q
 ```
 
 Backend integration tests:
 
 ``` powershell
-.ackendenv\Scripts\pytest.exe tests/backend -v
+.\backend\env\Scripts\pytest.exe tests/backend -v
 ```
 
 Person 3:
 
 ``` powershell
-.ackendenv\Scripts\pytest.exe test_person3.py -v
+.\backend\env\Scripts\pytest.exe test_person3.py -v
 ```
 
 The audited run reported:
